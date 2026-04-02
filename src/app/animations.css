@@ -1,0 +1,115 @@
+/* ──────────────────────────────────────────
+   Captain.ai — Global Typography
+────────────────────────────────────────── */
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Terminal-chic mono labels — apply .mono-label to small uppercase section labels */
+.mono-label {
+  font-family: 'Space Mono', monospace !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* ──────────────────────────────────────────
+   Captain.ai — Animation Keyframes
+────────────────────────────────────────── */
+
+/* Floating gradient blobs */
+@keyframes floatA {
+  0%,  100% { transform: translate(0px,   0px)  scale(1);    }
+  25%        { transform: translate(30px, -40px) scale(1.05); }
+  50%        { transform: translate(-20px, 20px) scale(0.95); }
+  75%        { transform: translate(40px,  30px) scale(1.02); }
+}
+
+@keyframes floatB {
+  0%,  100% { transform: translate(0px,   0px)  scale(1);    }
+  25%        { transform: translate(-35px, 25px) scale(1.04); }
+  50%        { transform: translate(20px, -30px) scale(0.97); }
+  75%        { transform: translate(-15px, 40px) scale(1.03); }
+}
+
+@keyframes floatC {
+  0%,  100% { transform: translate(0px,   0px)  scale(1);    }
+  33%        { transform: translate(25px,  35px) scale(1.06); }
+  66%        { transform: translate(-30px,-20px) scale(0.94); }
+}
+
+/* Hero content load-in */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Badge pulse on workflow step reveal */
+@keyframes badgePulse {
+  0%   { transform: scale(0.8); opacity: 0; }
+  50%  { transform: scale(1.12); }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+/* Timeline connecting line draw */
+@keyframes drawLine {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* Hero badge shimmer */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* Nav scroll transition */
+.nav-scrolled {
+  background: rgba(255, 255, 255, 0.88) !important;
+  box-shadow: 0 4px 40px rgba(7, 102, 83, 0.18) !important;
+}
+
+/* Hero animated elements */
+.hero-headline {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+.hero-sub {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+}
+.hero-badge {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+.hero-cta {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
+}
+.hero-input {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+.hero-proof {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both;
+}
+
+/* Blob base styles */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Workflow badge pulse trigger */
+.badge-animate {
+  animation: badgePulse 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Timeline line draw */
+.timeline-line {
+  transform-origin: top center;
+  animation: drawLine 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
