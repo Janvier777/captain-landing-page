@@ -118,7 +118,7 @@ export function HowItWorks() {
                 position: "absolute",
                 top: "-8px",
                 right: "20px",
-                fontFamily: "'Space Mono', monospace",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: "72px",
                 fontWeight: 400,
                 color: "rgba(111,196,176,0.1)",

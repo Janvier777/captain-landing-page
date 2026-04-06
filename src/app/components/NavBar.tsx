@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import anchorIcon from "../../assets/anchor-icon.png";
 
 const navLinks = [
-  { label: "How It Works", href: "#how-it-works", sectionId: "how-it-works" },
-  { label: "See It Work",   href: "#workflow",     sectionId: "workflow" },
-  { label: "Integrations",  href: "#integrations", sectionId: "integrations" },
-  { label: "Pricing",       href: "#",             sectionId: "" },
+  { label: "Demo Video", href: "#demo",     sectionId: "demo" },
+  { label: "Features",   href: "#features", sectionId: "features" },
+  { label: "Pricing",    href: "#pricing",  sectionId: "pricing" },
+  { label: "Join Us",    href: "#waitlist", sectionId: "waitlist" },
 ];
 
 export function NavBar() {
@@ -117,7 +117,7 @@ export function NavBar() {
 
         {/* CTA */}
         <a
-          href="#cta"
+          href="#waitlist"
           style={{
             background: "#1f4a34",
             color: "#ffffff",

@@ -127,7 +127,7 @@ export function Hero() {
               marginBottom: "0px",
             }}
           >
-            <span style={{ display: "block", fontSize: "clamp(18px, 2.6vw, 36px)", fontFamily: "'Lora', Georgia, serif", fontWeight: 500, letterSpacing: "0.04em" }}>
+            <span style={{ display: "block", fontSize: "clamp(18px, 2.6vw, 36px)", fontFamily: "'Inter', sans-serif", fontWeight: 500, letterSpacing: "0.04em" }}>
               Every small teams need
             </span>
             <span style={{ display: "flex", justifyContent: "center", marginTop: "-40px", marginBottom: "-36px" }}>

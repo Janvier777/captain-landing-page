@@ -136,7 +136,7 @@ export function WorkflowInAction() {
             </span>
             <span
               style={{
-                fontFamily: "'Space Mono', monospace",
+                fontFamily: "'Inter', sans-serif",
                 background: "#1f4a34",
                 color: "#8AAD66",
                 fontSize: "10px",
@@ -226,7 +226,7 @@ export function WorkflowInAction() {
                         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 * i + 0.2 }}
                         style={{
                           display: "inline-block",
-                          fontFamily: "'Space Mono', monospace",
+                          fontFamily: "'Inter', sans-serif",
                           fontSize: "9px",
                           fontWeight: 400,
                           letterSpacing: "0.1em",

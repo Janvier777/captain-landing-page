@@ -3,16 +3,16 @@
 ────────────────────────────────────────── */
 
 body {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Terminal-chic mono labels — apply .mono-label to small uppercase section labels */
 .mono-label {
-  font-family: 'Space Mono', monospace !important;
+  font-family: 'Inter', sans-serif !important;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 11px;

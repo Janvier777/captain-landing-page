@@ -88,14 +88,14 @@ export function ParticleHero() {
               100% { transform: scale(1); opacity: 0; }
             }
           `}</style>
-          <span style={{ color: "#8AAD66", fontSize: "11px", fontWeight: 400, letterSpacing: "0.1em", fontFamily: "'Space Mono', monospace" }}>
+          <span style={{ color: "#8AAD66", fontSize: "11px", fontWeight: 400, letterSpacing: "0.1em", fontFamily: "'Inter', sans-serif" }}>
             NOW ONBOARDING DESIGN PARTNERS
           </span>
         </div>
 
         {/* Logo / Headline */}
         <div style={{ width: "100%" }}>
-          <span style={{ display: "block", fontSize: "clamp(12px, 1.2vw, 16px)", fontFamily: "'Space Mono', monospace", fontWeight: 400, letterSpacing: "0.16em", color: "#5a8c7a", marginBottom: "16px", textTransform: "uppercase" }}>
+          <span style={{ display: "block", fontSize: "clamp(12px, 1.2vw, 16px)", fontFamily: "'Inter', sans-serif", fontWeight: 400, letterSpacing: "0.16em", color: "#5a8c7a", marginBottom: "16px", textTransform: "uppercase" }}>
             Every small team needs
           </span>
           <img
@@ -139,7 +139,7 @@ export function ParticleHero() {
           }}
         >
           <a
-            href="#cta"
+            href="#waitlist"
             style={{
               background: "#1f4a34",
               color: "#ffffff",

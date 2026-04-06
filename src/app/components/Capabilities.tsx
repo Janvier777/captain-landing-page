@@ -129,7 +129,7 @@ export function Capabilities() {
             <div style={{ position: "relative", display: "inline-flex", marginBottom: "20px" }}>
               <span
                 style={{
-                  fontFamily: "'Space Mono', monospace",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: "40px",
                   fontWeight: 400,
                   color: "rgba(111,196,176,0.12)",

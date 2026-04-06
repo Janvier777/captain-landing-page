@@ -2,14 +2,10 @@ import "./animations.css";
 import { useEffect, useState } from "react";
 import { NavBar } from "./components/NavBar";
 import { ParticleHero } from "./components/ParticleHero";
-import { Problem } from "./components/Problem";
-import { HowItWorks } from "./components/HowItWorks";
-import { WorkflowInAction } from "./components/WorkflowInAction";
-import { Capabilities } from "./components/Capabilities";
-import { Integrations } from "./components/Integrations";
-import { BuiltFor } from "./components/BuiltFor";
-import { Vision } from "./components/Vision";
-import { FinalCTA } from "./components/FinalCTA";
+import { DemoVideo } from "./components/DemoVideo";
+import { Features } from "./components/Features";
+import { Pricing } from "./components/Pricing";
+import { WaitlistCTA } from "./components/WaitlistCTA";
 import { Footer } from "./components/Footer";
 
 // ── Blob config ──────────────────────────────────────────────────────────────
@@ -168,7 +164,7 @@ export default function App() {
         background:
           "linear-gradient(160deg, #faf8f2 0%, #f5f7f0 25%, #f8faf4 50%, #f0f6e8 75%, #edf4e2 100%)",
         minHeight: "100vh",
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         overflowX: "hidden",
         position: "relative",
       }}
@@ -197,21 +193,12 @@ export default function App() {
         <main>
           <ParticleHero />
 
-          <Problem />
+          <DemoVideo />
           <SectionDivider />
-          <HowItWorks />
+          <Features />
           <SectionDivider />
-          <WorkflowInAction />
-          <SectionDivider />
-          <Capabilities />
-          <SectionDivider />
-          <BuiltFor />
-          <SectionDivider />
-          <Vision />
-          <SectionDivider />
-          <Integrations />
-          <SectionDivider />
-          <FinalCTA />
+          <Pricing />
+          <WaitlistCTA />
         </main>
         <Footer />
       </div>
