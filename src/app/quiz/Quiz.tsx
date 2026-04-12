@@ -6,6 +6,7 @@ import {
   dimensions,
   calculateResult,
 } from "./quizData";
+import anchorIcon from "../../assets/anchor-icon.png";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -20,7 +21,7 @@ const dimLabels: Record<string, string> = {};
 dimensions.forEach((d) => (dimLabels[d.key] = d.label));
 
 /* ============================================================
-   COVER SCREEN
+   COVER SCREEN — styled like MBTI-64 reference
    ============================================================ */
 function CoverScreen({
   onStart,
@@ -34,13 +35,15 @@ function CoverScreen({
       style={{
         position: "relative",
         width: "100%",
-        minHeight: "100vh",
+        height: "100vh",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
       }}
     >
+      {/* Particle background — same as landing page */}
       <iframe
         src="/particle.html"
         style={{
@@ -52,130 +55,125 @@ function CoverScreen({
           pointerEvents: "none",
         }}
       />
+
+      {/* Main content */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease }}
         style={{
-          position: "relative",
-          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
           textAlign: "center",
-          maxWidth: "680px",
+          maxWidth: "900px",
           padding: "0 24px",
+          zIndex: 2,
         }}
       >
+        {/* AGTI */}
         <h1
           style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: "clamp(38px, 6vw, 68px)",
-            fontWeight: 400,
-            color: "#0C342C",
-            lineHeight: 1.05,
-            letterSpacing: "-0.025em",
-            marginBottom: "12px",
-          }}
-        >
-          The AGTI
-        </h1>
-        <p
-          style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: "clamp(20px, 3vw, 32px)",
-            fontWeight: 400,
-            color: "#0C342C",
-            lineHeight: 1.2,
-            letterSpacing: "-0.01em",
+            fontFamily: "'Inter', Helvetica, sans-serif",
+            fontSize: "clamp(40px, 8vw, 90px)",
+            fontWeight: 800,
+            color: "#276D1E",
+            lineHeight: 1,
+            letterSpacing: "0.02em",
+            textTransform: "uppercase",
             marginBottom: "8px",
           }}
         >
-          MBTI for AI Teams
-        </p>
+          AGTI
+        </h1>
+        {/* MBTI for AI-native Startup — smaller line */}
         <p
           style={{
-            fontSize: "13px",
-            fontWeight: 500,
-            letterSpacing: "0.12em",
+            fontFamily: "'Inter', Helvetica, sans-serif",
+            fontSize: "clamp(18px, 3.5vw, 40px)",
+            fontWeight: 700,
+            color: "#276D1E",
+            lineHeight: 1.15,
+            letterSpacing: "0.02em",
             textTransform: "uppercase",
-            color: "#7a9a8a",
-            marginBottom: "36px",
+            marginBottom: "28px",
           }}
         >
-          AI Group Type Indicator
+          MBTI for AI-native Startup
         </p>
+
+        {/* Subtitle */}
         <p
           style={{
-            fontSize: "16px",
-            color: "#4a7a6a",
-            lineHeight: 1.65,
-            maxWidth: "520px",
-            margin: "0 auto 40px",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "clamp(15px, 1.8vw, 22px)",
+            fontWeight: 400,
+            color: "#1E4A14",
+            lineHeight: 1.5,
+            maxWidth: "680px",
+            marginBottom: "44px",
           }}
         >
-          Every team claims to be AI-native and building AGI. This test reveals
-          your team's AI-native index and its personality in the AI era.
+          Every team claims to be AI native, building AGI
         </p>
-        <div
+
+        {/* Start button */}
+        <button
+          onClick={onStart}
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "16px",
-            flexWrap: "wrap",
-            marginBottom: "24px",
+            background: "#276D1E",
+            color: "#fff",
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "clamp(18px, 2.2vw, 26px)",
+            fontWeight: 700,
+            padding: "20px 72px",
+            borderRadius: "100px",
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 6px 28px rgba(30,74,20,0.3)",
+            transition: "transform 0.15s, box-shadow 0.2s",
+            marginBottom: "32px",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-2px)";
+            e.currentTarget.style.boxShadow = "0 10px 36px rgba(30,74,20,0.4)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "0 6px 28px rgba(30,74,20,0.3)";
           }}
         >
-          <button
-            onClick={onStart}
-            style={{
-              background: "#1f4a34",
-              color: "#fff",
-              fontSize: "17px",
-              fontWeight: 600,
-              padding: "16px 48px",
-              borderRadius: "100px",
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 6px 28px rgba(0,0,0,0.3)",
-              transition: "transform 0.15s, box-shadow 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 10px 36px rgba(0,0,0,0.4)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 6px 28px rgba(0,0,0,0.3)";
-            }}
-          >
-            Start the test
-          </button>
-          <button
+          Start the Test
+        </button>
+
+        {/* Created by Captain */}
+        <p
+          style={{
+            fontSize: "15px",
+            color: "#5a7a5a",
+            marginBottom: "0",
+            lineHeight: 1.5,
+          }}
+        >
+          created by{" "}
+          <span
             onClick={onLearnMore}
             style={{
-              background: "transparent",
-              color: "#1f4a34",
-              fontSize: "15px",
-              fontWeight: 600,
-              padding: "14px 32px",
-              borderRadius: "100px",
-              border: "1.5px solid #1f4a34",
+              fontSize: "26px",
+              fontWeight: 700,
+              color: "#1E4A14",
               cursor: "pointer",
-              transition: "background 0.2s, color 0.2s",
+              textDecoration: "none",
+              borderBottom: "2px solid #1E4A14",
+              paddingBottom: "2px",
+              transition: "opacity 0.2s",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#1f4a34";
-              e.currentTarget.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.color = "#1f4a34";
-            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Know more about Captain
-          </button>
-        </div>
-        <p style={{ fontSize: "12px", color: "#7a9a8a", lineHeight: 1.5 }}>
-          No right answers &middot; results are permanent and irrefutable
+            Captain
+          </span>
         </p>
       </motion.div>
     </section>
@@ -187,8 +185,10 @@ function CoverScreen({
    ============================================================ */
 function QuizScreen({
   onComplete,
+  onLearnMore,
 }: {
   onComplete: (answers: Record<number, string>) => void;
+  onLearnMore: () => void;
 }) {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const total = questions.length;
@@ -232,8 +232,50 @@ function QuizScreen({
         />
       </div>
 
+      {/* Captain logo header */}
+      <div
+        style={{
+          position: "sticky",
+          top: "4px",
+          left: 0,
+          right: 0,
+          zIndex: 90,
+          background: "rgba(245,247,240,0.88)",
+          backdropFilter: "blur(12px)",
+          borderBottom: "1px solid rgba(7,102,83,0.06)",
+          padding: "12px 24px",
+        }}
+      >
+        <div
+          onClick={onLearnMore}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            cursor: "pointer",
+            width: "fit-content",
+          }}
+        >
+          <img
+            src={anchorIcon}
+            alt="Captain"
+            style={{ height: "32px", width: "32px", objectFit: "contain" }}
+          />
+          <span
+            style={{
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#0C342C",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            Your AI-native workspace
+          </span>
+        </div>
+      </div>
+
       {/* All questions */}
-      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "48px 24px 0" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "36px 24px 0" }}>
         {questions.map((q, idx) => (
           <motion.div
             key={q.id}
@@ -241,14 +283,14 @@ function QuizScreen({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease, delay: idx * 0.03 }}
             style={{
-              marginBottom: "56px",
+              marginBottom: "36px",
             }}
           >
             {/* Question header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
               <span
                 style={{
-                  fontSize: "15px",
+                  fontSize: "13px",
                   fontWeight: 700,
                   color: "#0C342C",
                   fontFamily: "'Space Mono', monospace",
@@ -258,7 +300,7 @@ function QuizScreen({
               </span>
               <span
                 style={{
-                  fontSize: "13px",
+                  fontSize: "12px",
                   color: "#7a9a8a",
                   fontWeight: 500,
                   letterSpacing: "0.05em",
@@ -272,29 +314,29 @@ function QuizScreen({
             <h2
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "clamp(24px, 3vw, 34px)",
+                fontSize: "clamp(18px, 2.2vw, 24px)",
                 fontWeight: 400,
                 color: "#0C342C",
-                lineHeight: 1.2,
+                lineHeight: 1.25,
                 letterSpacing: "-0.015em",
-                marginBottom: "8px",
+                marginBottom: "4px",
               }}
             >
               {q.text}
             </h2>
             <p
               style={{
-                fontSize: "16px",
+                fontSize: "13px",
                 color: "#7a9a8a",
-                marginBottom: "24px",
-                lineHeight: 1.5,
+                marginBottom: "14px",
+                lineHeight: 1.4,
               }}
             >
               {q.sub}
             </p>
 
             {/* Options */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {q.options.map((opt) => {
                 const selected = answers[q.id] === opt.letter;
                 return (
@@ -305,8 +347,8 @@ function QuizScreen({
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "flex-start",
-                      gap: "6px",
-                      padding: "18px 24px",
+                      gap: "3px",
+                      padding: "12px 18px",
                       background: selected
                         ? "rgba(7,102,83,0.08)"
                         : "rgba(255,255,255,0.6)",
@@ -314,31 +356,31 @@ function QuizScreen({
                       border: selected
                         ? "1.5px solid rgba(7,102,83,0.35)"
                         : "1px solid rgba(7,102,83,0.10)",
-                      borderRadius: "14px",
+                      borderRadius: "10px",
                       cursor: "pointer",
                       textAlign: "left",
                       transition: "background 0.2s, border 0.2s",
                       width: "100%",
                     }}
                   >
-                    <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
                       <span
                         style={{
-                          fontSize: "13px",
+                          fontSize: "12px",
                           fontWeight: 600,
                           color: "#7a9a8a",
                           letterSpacing: "0.08em",
                           flexShrink: 0,
-                          marginTop: "2px",
+                          marginTop: "1px",
                         }}
                       >
                         {opt.letter}
                       </span>
                       <span
                         style={{
-                          fontSize: "17px",
+                          fontSize: "15px",
                           color: "#0C342C",
-                          lineHeight: 1.5,
+                          lineHeight: 1.45,
                           fontWeight: 450,
                         }}
                       >
@@ -347,11 +389,11 @@ function QuizScreen({
                     </div>
                     <span
                       style={{
-                        fontSize: "14px",
+                        fontSize: "13px",
                         color: "#8aaa8a",
                         fontStyle: "italic",
-                        lineHeight: 1.45,
-                        paddingLeft: "25px",
+                        lineHeight: 1.35,
+                        paddingLeft: "22px",
                       }}
                     >
                       {opt.note}
@@ -480,6 +522,9 @@ function ResultsScreen({
   const result = resultTypes[code] || resultTypes.SVAF;
   const [email, setEmail] = useState("");
 
+  // Compute percentile from aiScore
+  const percentile = Math.min(99, Math.max(5, result.aiScore));
+
   const dimData = [
     { key: "sc", label: "Execution", left: "Speed-first", right: "Careful", leftVal: counts.sc.S, rightVal: counts.sc.C },
     { key: "vr", label: "Ambition", left: "Visionary", right: "Realist", leftVal: counts.vr.V, rightVal: counts.vr.R },
@@ -571,7 +616,7 @@ function ResultsScreen({
           </h2>
         </motion.div>
 
-        {/* ── Main content: Image left, Description right ── */}
+        {/* ── Main content: Left card + Right card (equal height) ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -581,10 +626,10 @@ function ResultsScreen({
             gridTemplateColumns: "1fr 1fr",
             gap: "24px",
             marginBottom: "28px",
-            alignItems: "start",
+            alignItems: "stretch",
           }}
         >
-          {/* Left: Image + Score + Tags */}
+          {/* Left: Image + AI Native Index + Score + Ranking */}
           <div
             style={{
               background: "rgba(255,255,255,0.55)",
@@ -592,6 +637,8 @@ function ResultsScreen({
               borderRadius: "20px",
               border: "1px solid rgba(7,102,83,0.10)",
               padding: "24px",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <div
@@ -600,17 +647,33 @@ function ResultsScreen({
                 overflow: "hidden",
                 marginBottom: "24px",
                 boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
+                aspectRatio: "1 / 1",
               }}
             >
               <img
                 src={`/agti/${result.code}.png`}
                 alt={result.name}
-                style={{ width: "100%", display: "block" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             </div>
 
+            {/* Your AI Native Index label */}
+            <p
+              style={{
+                fontSize: "13px",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "#7a9a8a",
+                textAlign: "center",
+                marginBottom: "8px",
+              }}
+            >
+              Your AI Native Index
+            </p>
+
             {/* AI Score */}
-            <div style={{ textAlign: "center", marginBottom: "16px" }}>
+            <div style={{ textAlign: "center", marginBottom: "8px" }}>
               <span
                 style={{
                   fontFamily: "'Space Mono', monospace",
@@ -634,38 +697,22 @@ function ResultsScreen({
               </span>
             </div>
 
-            {/* Tags */}
-            <div
+            {/* Ranking */}
+            <p
               style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "8px",
-                justifyContent: "center",
+                fontSize: "15px",
+                fontWeight: 500,
+                color: "#4a7a6a",
+                textAlign: "center",
+                marginBottom: "0",
+                marginTop: "auto",
               }}
             >
-              {result.tags.map((tag, i) => {
-                const c = tagColorMap[result.tagColors[i]] || tagColorMap.teal;
-                return (
-                  <span
-                    key={i}
-                    style={{
-                      background: c.bg,
-                      color: c.color,
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      padding: "6px 16px",
-                      borderRadius: "100px",
-                      letterSpacing: "0.03em",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                );
-              })}
-            </div>
+              You beat <strong style={{ color: "#0C342C" }}>{percentile}%</strong> of teams
+            </p>
           </div>
 
-          {/* Right: Description + Dimensions */}
+          {/* Right: Description + Dimensions + Tags */}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {/* Description */}
             <div
@@ -675,6 +722,7 @@ function ResultsScreen({
                 borderRadius: "20px",
                 border: "1px solid rgba(7,102,83,0.08)",
                 padding: "32px",
+                flex: 1,
               }}
             >
               <p
@@ -769,10 +817,40 @@ function ResultsScreen({
                 );
               })}
             </div>
+
+            {/* Tags — moved here from left card, below dimension bars */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "8px",
+                justifyContent: "flex-start",
+              }}
+            >
+              {result.tags.map((tag, i) => {
+                const c = tagColorMap[result.tagColors[i]] || tagColorMap.teal;
+                return (
+                  <span
+                    key={i}
+                    style={{
+                      background: c.bg,
+                      color: c.color,
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      padding: "6px 16px",
+                      borderRadius: "100px",
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    {tag}
+                  </span>
+                );
+              })}
+            </div>
           </div>
         </motion.div>
 
-        {/* ── AI-native bar + CTA ── */}
+        {/* ── Email CTA section — redesigned bigger box ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -780,64 +858,36 @@ function ResultsScreen({
           style={{
             background: "rgba(255,255,255,0.55)",
             backdropFilter: "blur(16px)",
-            borderRadius: "16px",
+            borderRadius: "20px",
             border: "1px solid rgba(7,102,83,0.10)",
-            padding: "28px 36px",
+            padding: "40px 48px",
             marginBottom: "24px",
           }}
         >
-          {/* Full-width score bar */}
-          <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
-            <span style={{ fontSize: "14px", fontWeight: 600, color: "#0C342C", whiteSpace: "nowrap" }}>
-              AI-native index
-            </span>
-            <div
-              style={{
-                flex: 1,
-                height: "8px",
-                background: "rgba(7,102,83,0.08)",
-                borderRadius: "4px",
-                overflow: "hidden",
-              }}
-            >
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${result.aiScore}%` }}
-                transition={{ duration: 1.2, ease, delay: 0.3 }}
-                style={{
-                  height: "100%",
-                  background: "linear-gradient(to right, #076653, #3a7a18)",
-                  borderRadius: "4px",
-                }}
-              />
-            </div>
-            <span style={{ fontSize: "16px", fontWeight: 700, color: "#0C342C", fontFamily: "'Space Mono', monospace" }}>
-              {result.aiScore}/100
-            </span>
-          </div>
+          {/* CTA headline */}
+          <p
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: "22px",
+              fontWeight: 500,
+              color: "#0C342C",
+              marginBottom: "24px",
+              lineHeight: 1.4,
+            }}
+          >
+            Want to see the full report and share it? Enter your email below.
+          </p>
 
-          {/* CTA row */}
+          {/* Email input + button row */}
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              gap: "16px",
+              gap: "12px",
+              marginBottom: "24px",
               flexWrap: "wrap",
+              alignItems: "center",
             }}
           >
-            <p
-              style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "20px",
-                fontWeight: 400,
-                color: "#0C342C",
-                margin: 0,
-                flex: 1,
-                minWidth: "200px",
-              }}
-            >
-              Make your team more AI-native
-            </p>
             <div
               style={{
                 display: "flex",
@@ -846,7 +896,8 @@ function ResultsScreen({
                 borderRadius: "100px",
                 padding: "4px",
                 border: "1px solid rgba(7,102,83,0.12)",
-                flex: "0 0 auto",
+                flex: "1 1 320px",
+                minWidth: "280px",
               }}
             >
               <input
@@ -858,20 +909,21 @@ function ResultsScreen({
                   background: "transparent",
                   border: "none",
                   borderRadius: "100px",
-                  padding: "10px 18px",
-                  fontSize: "14px",
+                  padding: "14px 20px",
+                  fontSize: "16px",
                   color: "#0C342C",
                   outline: "none",
-                  width: "200px",
+                  flex: 1,
+                  minWidth: 0,
                 }}
               />
               <button
                 style={{
                   background: "#1f4a34",
                   color: "#fff",
-                  fontSize: "14px",
+                  fontSize: "15px",
                   fontWeight: 600,
-                  padding: "10px 20px",
+                  padding: "14px 24px",
                   borderRadius: "100px",
                   border: "none",
                   cursor: "pointer",
@@ -884,29 +936,35 @@ function ResultsScreen({
             <button
               onClick={onLearnMore}
               style={{
-                background: "transparent",
-                border: "1.5px solid #1f4a34",
-                color: "#1f4a34",
-                fontSize: "14px",
+                background: "#1f4a34",
+                color: "#fff",
+                fontSize: "15px",
                 fontWeight: 600,
-                padding: "10px 24px",
+                padding: "14px 28px",
                 borderRadius: "100px",
+                border: "none",
                 cursor: "pointer",
-                transition: "background 0.2s, color 0.2s",
+                transition: "opacity 0.2s",
                 whiteSpace: "nowrap",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#1f4a34";
-                e.currentTarget.style.color = "#fff";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "#1f4a34";
-              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
-              Learn more about Captain
+              Learn More About Captain
             </button>
           </div>
+
+          {/* Supplementary text */}
+          <p
+            style={{
+              fontSize: "15px",
+              color: "#5a8a6a",
+              lineHeight: 1.65,
+              maxWidth: "640px",
+            }}
+          >
+            Captain is your AI-native workspace. It can make your AI-native index higher and your team more efficient.
+          </p>
         </motion.div>
 
         {/* Restart */}
@@ -972,6 +1030,7 @@ export function Quiz({ onFinish }: { onFinish: () => void }) {
                 setScreen("results");
                 window.scrollTo(0, 0);
               }}
+              onLearnMore={onFinish}
             />
           </motion.div>
         )}
