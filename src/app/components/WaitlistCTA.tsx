@@ -23,10 +23,10 @@ export function WaitlistCTA() {
       <motion.img
         src="/mech-hand-nobg.png"
         alt=""
-        initial={{ opacity: 0, x: -80 }}
+        initial={{ opacity: 0, x: "-60%" }}
         whileInView={{ opacity: 0.55, x: 0 }}
         viewport={vp}
-        transition={{ duration: 1.2, ease }}
+        transition={{ duration: 0.8, ease }}
         style={{
           position: "absolute",
           left: "-4%",
@@ -43,10 +43,10 @@ export function WaitlistCTA() {
       <motion.img
         src="/human-hand-nobg.png"
         alt=""
-        initial={{ opacity: 0, x: 80 }}
+        initial={{ opacity: 0, x: "60%" }}
         whileInView={{ opacity: 0.55, x: 0 }}
         viewport={vp}
-        transition={{ duration: 1.2, ease }}
+        transition={{ duration: 0.8, ease }}
         style={{
           position: "absolute",
           right: "-4%",

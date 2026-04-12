@@ -7,6 +7,7 @@ import { Features } from "./components/Features";
 import { Pricing } from "./components/Pricing";
 import { WaitlistCTA } from "./components/WaitlistCTA";
 import { Footer } from "./components/Footer";
+import { Quiz } from "./quiz/Quiz";
 
 // ── Blob config ──────────────────────────────────────────────────────────────
 const blobs = [
@@ -158,6 +159,19 @@ function ScrollProgress() {
 }
 
 export default function App() {
+  const [page, setPage] = useState<"quiz" | "landing">("quiz");
+
+  if (page === "quiz") {
+    return (
+      <Quiz
+        onFinish={() => {
+          setPage("landing");
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
+
   return (
     <div
       style={{
