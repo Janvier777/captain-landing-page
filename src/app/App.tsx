@@ -1,6 +1,6 @@
 import "./animations.css";
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase, supabaseMissing } from "../lib/supabase";
 import { NavBar } from "./components/NavBar";
 import { ParticleHero } from "./components/ParticleHero";
 import { DemoVideo } from "./components/DemoVideo";
@@ -163,9 +163,13 @@ export default function App() {
   const [dbStatus, setDbStatus] = useState<"checking" | "connected" | "error">("checking");
 
   useEffect(() => {
-    supabase.from("_test_connection").select("*").limit(1).then(({ error }) => {
-      // A "relation does not exist" error still means the connection worked
-      if (!error || error.code === "42P01") {
+    if (supabaseMissing) {
+      setDbStatus("error");
+      console.error("Supabase env vars missing — check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY");
+      return;
+    }
+    supabase.auth.getSession().then(({ error }) => {
+      if (!error) {
         setDbStatus("connected");
       } else {
         setDbStatus("error");
