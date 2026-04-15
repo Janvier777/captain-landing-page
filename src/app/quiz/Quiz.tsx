@@ -135,7 +135,7 @@ function CoverScreen({
             marginTop: 0,
           }}
         >
-          MBTI for AI Teams
+          How AI-ready is your team?
         </p>
 
         {/* Description */}
