@@ -4,7 +4,6 @@ import anchorIcon from "../../assets/anchor-icon.png";
 const navLinks = [
   { label: "Demo Video", href: "#demo",     sectionId: "demo" },
   { label: "Features",   href: "#features", sectionId: "features" },
-  { label: "Pricing",    href: "#pricing",  sectionId: "pricing" },
   { label: "Join Us",    href: "#waitlist", sectionId: "waitlist" },
 ];
 

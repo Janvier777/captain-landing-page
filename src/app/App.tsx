@@ -4,7 +4,6 @@ import { NavBar } from "./components/NavBar";
 import { ParticleHero } from "./components/ParticleHero";
 import { DemoVideo } from "./components/DemoVideo";
 import { Features } from "./components/Features";
-import { Pricing } from "./components/Pricing";
 import { WaitlistCTA } from "./components/WaitlistCTA";
 import { Footer } from "./components/Footer";
 import { Quiz } from "./quiz/Quiz";
@@ -211,7 +210,6 @@ export default function App() {
           <SectionDivider />
           <Features />
           <SectionDivider />
-          <Pricing />
           <WaitlistCTA />
         </main>
         <Footer />

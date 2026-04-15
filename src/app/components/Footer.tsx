@@ -3,7 +3,6 @@ import anchorIcon from "../../assets/anchor-icon.png";
 export function Footer() {
   const navLinks = [
     { label: "How It Works", href: "#demo" },
-    { label: "Pricing", href: "#pricing" },
     { label: "Contact", href: "#" },
   ];
 

@@ -21,7 +21,7 @@ const dimLabels: Record<string, string> = {};
 dimensions.forEach((d) => (dimLabels[d.key] = d.label));
 
 /* ============================================================
-   COVER SCREEN — styled like MBTI-64 reference
+   COVER SCREEN
    ============================================================ */
 function CoverScreen({
   onStart,
@@ -35,15 +35,23 @@ function CoverScreen({
       style={{
         position: "relative",
         width: "100%",
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
       }}
     >
-      {/* Particle background — same as landing page */}
+      <style>{`
+        @media (max-width: 767px) {
+          .agti-title {
+            font-size: 48px !important;
+          }
+          .agti-btn {
+            font-size: 13px !important;
+          }
+        }
+      `}</style>
       <iframe
         src="/particle.html"
         style={{
@@ -55,126 +63,154 @@ function CoverScreen({
           pointerEvents: "none",
         }}
       />
+      <img
+        src="/agti/background.png"
+        alt=""
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          height: "auto",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
 
-      {/* Main content */}
+      {/* Content */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease }}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          maxWidth: "900px",
-          padding: "0 24px",
+          position: "relative",
           zIndex: 2,
+          marginTop: "-30vh",
+          background: "transparent",
+          border: "none",
+          boxShadow: "none",
+          textAlign: "center",
+          maxWidth: "600px",
+          width: "90%",
         }}
       >
-        {/* AGTI */}
-        <h1
-          style={{
-            fontFamily: "'Inter', Helvetica, sans-serif",
-            fontSize: "clamp(40px, 8vw, 90px)",
-            fontWeight: 800,
-            color: "#276D1E",
-            lineHeight: 1,
-            letterSpacing: "0.02em",
-            textTransform: "uppercase",
-            marginBottom: "8px",
-          }}
-        >
-          AGTI
-        </h1>
-        {/* MBTI for AI-native Startup — smaller line */}
+        {/* Label */}
         <p
           style={{
-            fontFamily: "'Inter', Helvetica, sans-serif",
-            fontSize: "clamp(18px, 3.5vw, 40px)",
-            fontWeight: 700,
-            color: "#276D1E",
-            lineHeight: 1.15,
-            letterSpacing: "0.02em",
+            fontSize: "16px",
+            fontWeight: 500,
+            letterSpacing: "0.14em",
             textTransform: "uppercase",
-            marginBottom: "28px",
+            color: "#4a7a5a",
+            marginBottom: "10px",
+            marginTop: 0,
           }}
         >
-          MBTI for AI-native Startup
+          AI GROUP TYPE INDICATOR
         </p>
+
+        {/* Main title */}
+        <h1
+          className="agti-title"
+          style={{
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontSize: "96px",
+            fontWeight: 700,
+            color: "#1a3a2a",
+            lineHeight: 1,
+            marginBottom: "6px",
+            marginTop: 0,
+          }}
+        >
+          The AGTI
+        </h1>
 
         {/* Subtitle */}
         <p
           style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(15px, 1.8vw, 22px)",
-            fontWeight: 400,
-            color: "#1E4A14",
-            lineHeight: 1.5,
-            maxWidth: "680px",
-            marginBottom: "44px",
+            fontSize: "32px",
+            fontWeight: 600,
+            color: "#2d5a3d",
+            marginBottom: "10px",
+            marginTop: 0,
           }}
         >
-          Every team claims to be AI native, building AGI
+          MBTI for AI Teams
         </p>
 
-        {/* Start button */}
+        {/* Description */}
+        <p
+          style={{
+            fontSize: "22px",
+            color: "#3a5a44",
+            lineHeight: 1.6,
+            maxWidth: "400px",
+            margin: "0 auto 24px",
+          }}
+        >
+          Find out your AI team score and discover your team's personality type.
+        </p>
+
+        {/* Primary CTA */}
         <button
+          className="agti-btn"
           onClick={onStart}
           style={{
-            background: "#276D1E",
-            color: "#fff",
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(18px, 2.2vw, 26px)",
-            fontWeight: 700,
-            padding: "20px 72px",
-            borderRadius: "100px",
+            background: "#2d5a3d",
+            color: "#f5f0e8",
             border: "none",
+            borderRadius: "50px",
+            padding: "12px 28px",
+            fontSize: "20px",
+            fontWeight: 600,
             cursor: "pointer",
-            boxShadow: "0 6px 28px rgba(30,74,20,0.3)",
+            maxWidth: "360px",
+            width: "100%",
             transition: "transform 0.15s, box-shadow 0.2s",
-            marginBottom: "32px",
+            boxShadow: "0 4px 16px rgba(30, 60, 30, 0.18)",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 10px 36px rgba(30,74,20,0.4)";
+            e.currentTarget.style.boxShadow = "0 8px 24px rgba(30, 60, 30, 0.28)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 6px 28px rgba(30,74,20,0.3)";
+            e.currentTarget.style.boxShadow = "0 4px 16px rgba(30, 60, 30, 0.18)";
           }}
         >
-          Start the Test
+          Test here for free
         </button>
 
-        {/* Created by Captain */}
-        <p
+        {/* Captain referral row */}
+        <a
+          href="#"
+          onClick={(e) => { e.preventDefault(); onLearnMore(); }}
           style={{
-            fontSize: "15px",
-            color: "#5a7a5a",
-            marginBottom: "0",
-            lineHeight: 1.5,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            marginTop: "16px",
+            cursor: "pointer",
+            textDecoration: "none",
           }}
         >
-          created by{" "}
+          <img
+            src="/assets/captain-logo.jpg"
+            alt="Captain"
+            style={{ height: "80px", width: "auto", mixBlendMode: "multiply" }}
+          />
           <span
-            onClick={onLearnMore}
             style={{
-              fontSize: "26px",
-              fontWeight: 700,
-              color: "#1E4A14",
-              cursor: "pointer",
-              textDecoration: "none",
-              borderBottom: "2px solid #1E4A14",
-              paddingBottom: "2px",
-              transition: "opacity 0.2s",
+              fontSize: "20px",
+              fontWeight: 600,
+              color: "#2d5a3d",
+              textDecoration: "underline",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Captain
+            Build an AI-native team with Captain
           </span>
-        </p>
+        </a>
       </motion.div>
     </section>
   );
