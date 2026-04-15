@@ -160,57 +160,28 @@ function ScrollProgress() {
 
 export default function App() {
   const [page, setPage] = useState<"quiz" | "landing">("quiz");
-  const [dbStatus, setDbStatus] = useState<"checking" | "connected" | "error">("checking");
-
   useEffect(() => {
     if (supabaseMissing) {
-      setDbStatus("error");
       console.error("Supabase env vars missing — check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY");
       return;
     }
     supabase.auth.getSession().then(({ error }) => {
       if (!error) {
-        setDbStatus("connected");
+        console.log("Supabase connected");
       } else {
-        setDbStatus("error");
         console.error("Supabase connection error:", error);
       }
     });
   }, []);
 
-  const statusBadge = (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "16px",
-        right: "16px",
-        zIndex: 9999,
-        background: dbStatus === "connected" ? "#22c55e" : dbStatus === "error" ? "#ef4444" : "#f59e0b",
-        color: "#fff",
-        fontSize: "13px",
-        fontWeight: 600,
-        padding: "8px 16px",
-        borderRadius: "100px",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.2)",
-      }}
-    >
-      {dbStatus === "checking" && "Checking Supabase..."}
-      {dbStatus === "connected" && "Connected"}
-      {dbStatus === "error" && "Connection Error"}
-    </div>
-  );
-
   if (page === "quiz") {
     return (
-      <>
-        {statusBadge}
-        <Quiz
-          onFinish={() => {
-            setPage("landing");
-            window.scrollTo(0, 0);
-          }}
-        />
-      </>
+      <Quiz
+        onFinish={() => {
+          setPage("landing");
+          window.scrollTo(0, 0);
+        }}
+      />
     );
   }
 
@@ -225,7 +196,6 @@ export default function App() {
         position: "relative",
       }}
     >
-      {statusBadge}
       {/* ── Scroll progress bar ── */}
       <ScrollProgress />
 
