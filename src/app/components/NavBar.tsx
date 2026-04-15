@@ -7,7 +7,7 @@ const navLinks = [
   { label: "Join Us",    href: "#waitlist", sectionId: "waitlist" },
 ];
 
-export function NavBar() {
+export function NavBar({ onGoToQuiz }: { onGoToQuiz?: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -114,34 +114,62 @@ export function NavBar() {
           })}
         </div>
 
-        {/* CTA */}
-        <a
-          href="#waitlist"
-          style={{
-            background: "#1f4a34",
-            color: "#ffffff",
-            fontSize: "14px",
-            fontWeight: 600,
-            padding: "10px 22px",
-            borderRadius: "100px",
-            textDecoration: "none",
-            letterSpacing: "-0.01em",
-            boxShadow: "0 4px 16px rgba(7,102,83,0.3)",
-            transition: "opacity 0.2s, transform 0.15s, box-shadow 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.opacity = "0.9";
-            (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-            (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(7,102,83,0.4)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.opacity = "1";
-            (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-            (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(7,102,83,0.3)";
-          }}
-        >
-          Get Early Access
-        </a>
+        {/* CTA buttons */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {onGoToQuiz && (
+            <button
+              onClick={onGoToQuiz}
+              style={{
+                background: "transparent",
+                color: "#076653",
+                fontSize: "14px",
+                fontWeight: 600,
+                padding: "10px 20px",
+                borderRadius: "100px",
+                border: "1.5px solid #076653",
+                cursor: "pointer",
+                transition: "background 0.2s, color 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#076653";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "#076653";
+              }}
+            >
+              Take the AGTI Test
+            </button>
+          )}
+          <a
+            href="#waitlist"
+            style={{
+              background: "#1f4a34",
+              color: "#ffffff",
+              fontSize: "14px",
+              fontWeight: 600,
+              padding: "10px 22px",
+              borderRadius: "100px",
+              textDecoration: "none",
+              letterSpacing: "-0.01em",
+              boxShadow: "0 4px 16px rgba(7,102,83,0.3)",
+              transition: "opacity 0.2s, transform 0.15s, box-shadow 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.opacity = "0.9";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(7,102,83,0.4)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.opacity = "1";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(7,102,83,0.3)";
+            }}
+          >
+            Get Early Access
+          </a>
+        </div>
       </div>
     </nav>
   );

@@ -160,6 +160,8 @@ function ScrollProgress() {
 
 export default function App() {
   const [page, setPage] = useState<"quiz" | "landing">("quiz");
+  const goToQuiz = () => { setPage("quiz"); window.scrollTo(0, 0); };
+  const goToLanding = () => { setPage("landing"); window.scrollTo(0, 0); };
   useEffect(() => {
     if (supabaseMissing) {
       console.error("Supabase env vars missing — check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY");
@@ -175,14 +177,7 @@ export default function App() {
   }, []);
 
   if (page === "quiz") {
-    return (
-      <Quiz
-        onFinish={() => {
-          setPage("landing");
-          window.scrollTo(0, 0);
-        }}
-      />
-    );
+    return <Quiz onFinish={goToLanding} />;
   }
 
   return (
@@ -216,7 +211,7 @@ export default function App() {
 
       {/* ── Page content ── */}
       <div style={{ position: "relative", zIndex: 1 }}>
-        <NavBar />
+        <NavBar onGoToQuiz={goToQuiz} />
         <main>
           <ParticleHero />
 
