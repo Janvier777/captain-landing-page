@@ -505,8 +505,18 @@ function ResultsScreen({
   const { code, counts, answeredCount, isComplete } = calculateResult(answers);
   const result = resultTypes[code] || resultTypes.SVAF;
   const [email, setEmail] = useState("");
+  const [qrDataUrl, setQrDataUrl] = useState<string>("");
 
   const percentile = Math.min(99, Math.max(5, result.aiScore));
+
+  // Generate QR code once on mount
+  useEffect(() => {
+    QRCode.toDataURL("https://captainspace.ai", {
+      width: 180,
+      margin: 1,
+      color: { dark: "#0C342C", light: "#00000000" },
+    }).then(setQrDataUrl).catch(() => {});
+  }, []);
 
   const dimData = [
     { key: "sc", label: "Execution", left: "Speed-first", right: "Careful", leftVal: counts.sc.S, rightVal: counts.sc.C },
@@ -518,154 +528,146 @@ function ResultsScreen({
   // Generate share card as downloadable image
   const handleShare = useCallback(async () => {
     const canvas = document.createElement("canvas");
-    const w = 1080, h = 1350; // Instagram-friendly 4:5
+    const w = 1080, h = 1350; // Instagram 4:5
     canvas.width = w;
     canvas.height = h;
     const ctx = canvas.getContext("2d")!;
 
     // Background gradient
     const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, "#f5f7f0");
+    grad.addColorStop(0, "#faf8f2");
     grad.addColorStop(0.5, "#f0f6e8");
-    grad.addColorStop(1, "#edf4e2");
+    grad.addColorStop(1, "#e6efdd");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
-    // Card background
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
-    const rx = 80, ry = 100, rw = w - 160, rh = h - 200;
+    // Inner card
+    const rx = 60, ry = 60, rw = w - 120, rh = h - 120;
+    ctx.fillStyle = "rgba(255,255,255,0.82)";
     ctx.beginPath();
-    ctx.roundRect(rx, ry, rw, rh, 28);
+    ctx.roundRect(rx, ry, rw, rh, 32);
     ctx.fill();
-
-    // Border
-    ctx.strokeStyle = "rgba(7,102,83,0.12)";
+    ctx.strokeStyle = "rgba(7,102,83,0.14)";
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Text
-    ctx.textAlign = "center";
     const cx = w / 2;
 
     // Top label
-    ctx.font = "500 14px Inter, sans-serif";
-    ctx.fillStyle = "#7a9a8a";
-    ctx.letterSpacing = "4px";
-    ctx.fillText("AI GROUP TYPE INDICATOR", cx, 200);
-
-    // Result code
-    ctx.font = "bold 120px 'Space Mono', monospace";
-    ctx.fillStyle = "#0C342C";
-    ctx.letterSpacing = "8px";
-    ctx.fillText(result.code, cx, 360);
-
-    // Result name
-    ctx.font = "400 36px 'Playfair Display', Georgia, serif";
-    ctx.fillStyle = "#0C342C";
-    ctx.letterSpacing = "0px";
-    ctx.fillText(result.name, cx, 420);
-
-    // Score circle
-    ctx.beginPath();
-    ctx.arc(cx, 580, 90, 0, Math.PI * 2);
-    ctx.fillStyle = "#1f4a34";
-    ctx.fill();
-    ctx.font = "bold 56px 'Space Mono', monospace";
-    ctx.fillStyle = "#fff";
-    ctx.fillText(String(result.aiScore), cx, 598);
-    ctx.font = "400 16px Inter, sans-serif";
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
-    ctx.fillText("AI Native Index", cx, 630);
-
-    // Dimension bars
-    const barY = 720;
-    dimData.forEach((d, i) => {
-      const y = barY + i * 60;
-      const barX = 160, barW = w - 320;
-      const tot = d.leftVal + d.rightVal;
-      const pct = tot > 0 ? d.leftVal / tot : 0.5;
-
-      ctx.textAlign = "left";
-      ctx.font = "600 13px Inter, sans-serif";
-      ctx.fillStyle = "#7a9a8a";
-      ctx.fillText(d.label.toUpperCase(), barX, y);
-
-      // Bar background
-      ctx.fillStyle = "rgba(7,102,83,0.08)";
-      ctx.beginPath();
-      ctx.roundRect(barX, y + 8, barW, 8, 4);
-      ctx.fill();
-
-      // Bar fill
-      ctx.fillStyle = "#076653";
-      ctx.beginPath();
-      ctx.roundRect(barX, y + 8, barW * pct, 8, 4);
-      ctx.fill();
-
-      ctx.font = "400 11px Inter, sans-serif";
-      ctx.fillStyle = "#8aaa8a";
-      ctx.textAlign = "left";
-      ctx.fillText(d.left, barX, y + 32);
-      ctx.textAlign = "right";
-      ctx.fillText(d.right, barX + barW, y + 32);
-    });
-
-    // Tags
     ctx.textAlign = "center";
-    const tagY = barY + 260;
-    let tagX = 160;
-    ctx.font = "600 14px Inter, sans-serif";
-    result.tags.forEach((tag) => {
-      const tw = ctx.measureText(tag).width + 28;
-      if (tagX + tw > w - 160) { tagX = 160; }
-      ctx.fillStyle = "rgba(7,102,83,0.08)";
-      ctx.beginPath();
-      ctx.roundRect(tagX, tagY, tw, 30, 15);
-      ctx.fill();
-      ctx.fillStyle = "#076653";
-      ctx.textAlign = "center";
-      ctx.fillText(tag, tagX + tw / 2, tagY + 20);
-      tagX += tw + 10;
+    ctx.font = "500 18px Inter, sans-serif";
+    ctx.fillStyle = "#7a9a8a";
+    ctx.fillText("A G T I  ·  A I  G R O U P  T Y P E  I N D I C A T O R", cx, 140);
+
+    // Helper: load image as Promise
+    const loadImg = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
     });
 
-    // QR code
+    // Load character + QR images, then draw and download
     try {
-      const qrDataUrl = await QRCode.toDataURL("https://captainspace.ai", {
-        width: 120, margin: 1, color: { dark: "#0C342C", light: "#00000000" },
-      });
-      const qrImg = new Image();
-      qrImg.onload = () => {
-        ctx.drawImage(qrImg, w - 240, h - 220, 120, 120);
-        ctx.textAlign = "right";
-        ctx.font = "500 13px Inter, sans-serif";
-        ctx.fillStyle = "#7a9a8a";
-        ctx.fillText("captainspace.ai", w - 180, h - 80);
+      const charImg = await loadImg(`/agti/${result.code}.png`);
 
-        // Bottom left: branding
-        ctx.textAlign = "left";
-        ctx.font = "600 16px Inter, sans-serif";
-        ctx.fillStyle = "#1f4a34";
-        ctx.fillText("The AGTI — captainspace.ai", 160, h - 100);
+      // Character image with rounded corners (centered top)
+      const imgSize = 420;
+      const imgX = cx - imgSize / 2;
+      const imgY = 190;
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(imgX, imgY, imgSize, imgSize, 24);
+      ctx.clip();
+      ctx.drawImage(charImg, imgX, imgY, imgSize, imgSize);
+      ctx.restore();
+      // Soft shadow border
+      ctx.strokeStyle = "rgba(7,102,83,0.15)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(imgX, imgY, imgSize, imgSize, 24);
+      ctx.stroke();
 
-        // Download
-        const link = document.createElement("a");
-        link.download = `AGTI-${result.code}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      };
-      qrImg.src = qrDataUrl;
-    } catch {
-      // Fallback without QR
+      // Result code
       ctx.textAlign = "center";
-      ctx.font = "600 16px Inter, sans-serif";
+      ctx.font = "bold 68px 'Space Mono', Menlo, monospace";
+      ctx.fillStyle = "#0C342C";
+      ctx.fillText(result.code, cx, imgY + imgSize + 80);
+
+      // Result name
+      ctx.font = "400 40px 'Playfair Display', Georgia, serif";
+      ctx.fillStyle = "#0C342C";
+      ctx.fillText(result.name, cx, imgY + imgSize + 130);
+
+      // Hook line — wrap if needed
+      ctx.font = "italic 400 24px 'Playfair Display', Georgia, serif";
+      ctx.fillStyle = "#4a7a6a";
+      const hook = `"${result.shortHook}"`;
+      const maxWidth = w - 260;
+      const words = hook.split(" ");
+      const lines: string[] = [];
+      let line = "";
+      for (const word of words) {
+        const test = line ? line + " " + word : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      }
+      if (line) lines.push(line);
+      const hookStartY = imgY + imgSize + 180;
+      lines.forEach((l, i) => ctx.fillText(l, cx, hookStartY + i * 32));
+
+      // Score pill
+      const pillY = hookStartY + lines.length * 32 + 40;
+      const pillW = 280, pillH = 76;
+      const pillX = cx - pillW / 2;
       ctx.fillStyle = "#1f4a34";
-      ctx.fillText("captainspace.ai", cx, h - 120);
+      ctx.beginPath();
+      ctx.roundRect(pillX, pillY, pillW, pillH, 38);
+      ctx.fill();
+      ctx.font = "bold 44px 'Space Mono', Menlo, monospace";
+      ctx.fillStyle = "#fff";
+      ctx.textBaseline = "middle";
+      ctx.fillText(`${result.aiScore} / 100`, cx, pillY + pillH / 2 + 2);
+      ctx.textBaseline = "alphabetic";
+      // Small label above pill
+      ctx.font = "500 12px Inter, sans-serif";
+      ctx.fillStyle = "#7a9a8a";
+      ctx.fillText("AI NATIVE INDEX", cx, pillY - 10);
+
+      // Bottom: QR + url
+      const qrUrl = await QRCode.toDataURL("https://captainspace.ai", {
+        width: 160,
+        margin: 1,
+        color: { dark: "#0C342C", light: "#00000000" },
+      });
+      const qrImg = await loadImg(qrUrl);
+      const qrSize = 130;
+      const qrX = cx - qrSize / 2;
+      const qrY = h - 220;
+      ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+
+      ctx.textAlign = "center";
+      ctx.font = "600 18px Inter, sans-serif";
+      ctx.fillStyle = "#1f4a34";
+      ctx.fillText("captainspace.ai", cx, qrY + qrSize + 30);
+      ctx.font = "400 13px Inter, sans-serif";
+      ctx.fillStyle = "#7a9a8a";
+      ctx.fillText("Scan to discover your team's type", cx, qrY + qrSize + 52);
+
+      // Download
       const link = document.createElement("a");
       link.download = `AGTI-${result.code}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
+    } catch (err) {
+      console.error("Share card generation failed:", err);
     }
-  }, [result, dimData]);
+  }, [result]);
 
   return (
     <div
@@ -745,10 +747,25 @@ function ResultsScreen({
               color: "#0C342C",
               lineHeight: 1.15,
               letterSpacing: "-0.02em",
+              marginBottom: "8px",
             }}
           >
             {result.name}
           </h2>
+          <p
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontStyle: "italic",
+              fontSize: "clamp(14px, 1.8vw, 18px)",
+              fontWeight: 400,
+              color: "#4a7a6a",
+              lineHeight: 1.4,
+              maxWidth: "620px",
+              margin: "0 auto",
+            }}
+          >
+            "{result.shortHook}"
+          </p>
         </motion.div>
 
         {/* Main content: 2-column grid */}
@@ -792,49 +809,101 @@ function ResultsScreen({
               />
             </div>
 
-            <p
+            {/* Bottom row: QR | Score | Share */}
+            <div
               style={{
-                fontSize: "11px",
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "#7a9a8a",
-                textAlign: "center",
-                marginBottom: "4px",
-              }}
-            >
-              Your AI Native Index
-            </p>
-
-            <div style={{ textAlign: "center", marginBottom: "4px" }}>
-              <span
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: "clamp(36px, 5vw, 52px)",
-                  fontWeight: 700,
-                  color: "#0C342C",
-                  lineHeight: 1,
-                }}
-              >
-                <AnimatedCounter target={result.aiScore} />
-              </span>
-              <span style={{ fontSize: "16px", color: "#7a9a8a", marginLeft: "6px", fontWeight: 400 }}>
-                / 100
-              </span>
-            </div>
-
-            <p
-              style={{
-                fontSize: "13px",
-                fontWeight: 500,
-                color: "#4a7a6a",
-                textAlign: "center",
-                marginBottom: "0",
+                display: "grid",
+                gridTemplateColumns: "auto 1fr auto",
+                alignItems: "center",
+                gap: "12px",
                 marginTop: "auto",
               }}
             >
-              You beat <strong style={{ color: "#0C342C" }}>{percentile}%</strong> of teams
-            </p>
+              {/* QR code — left */}
+              <a
+                href="https://captainspace.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "64px",
+                  height: "64px",
+                  background: "#fff",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(7,102,83,0.12)",
+                  padding: "4px",
+                  textDecoration: "none",
+                }}
+                title="Open captainspace.ai"
+              >
+                {qrDataUrl ? (
+                  <img src={qrDataUrl} alt="captainspace.ai QR" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                ) : (
+                  <span style={{ fontSize: "10px", color: "#7a9a8a" }}>QR</span>
+                )}
+              </a>
+
+              {/* Score — center */}
+              <div style={{ textAlign: "center" }}>
+                <div>
+                  <span
+                    style={{
+                      fontFamily: "'Space Mono', monospace",
+                      fontSize: "clamp(32px, 4.5vw, 44px)",
+                      fontWeight: 700,
+                      color: "#0C342C",
+                      lineHeight: 1,
+                    }}
+                  >
+                    <AnimatedCounter target={result.aiScore} />
+                  </span>
+                  <span style={{ fontSize: "15px", color: "#7a9a8a", marginLeft: "4px", fontWeight: 400 }}>
+                    / 100
+                  </span>
+                </div>
+                <p style={{ fontSize: "11px", fontWeight: 500, color: "#4a7a6a", margin: "4px 0 0" }}>
+                  You beat <strong style={{ color: "#0C342C" }}>{percentile}%</strong> of teams
+                </p>
+              </div>
+
+              {/* Share button — right */}
+              <button
+                onClick={handleShare}
+                aria-label="Share your result"
+                title="Share your result"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "44px",
+                  height: "44px",
+                  background: "#1f4a34",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(31,74,52,0.28)",
+                  transition: "transform 0.15s, box-shadow 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 20px rgba(31,74,52,0.38)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(31,74,52,0.28)";
+                }}
+              >
+                {/* Upload/share icon */}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" />
+                  <polyline points="16 6 12 2 8 6" />
+                  <line x1="12" y1="2" x2="12" y2="15" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Right: Description + Dimensions + Tags */}
@@ -989,29 +1058,6 @@ function ResultsScreen({
               </button>
             </div>
 
-            {/* Share button */}
-            <button
-              onClick={handleShare}
-              style={{
-                background: "transparent",
-                color: "#1f4a34",
-                fontSize: "14px",
-                fontWeight: 600,
-                padding: "12px 24px",
-                borderRadius: "100px",
-                border: "1.5px solid #1f4a34",
-                cursor: "pointer",
-                transition: "background 0.2s, color 0.2s",
-                whiteSpace: "nowrap",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "#1f4a34"; e.currentTarget.style.color = "#fff"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#1f4a34"; }}
-            >
-              Share ↗
-            </button>
           </div>
 
           {/* Captain CTA */}
