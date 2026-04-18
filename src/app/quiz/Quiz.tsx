@@ -506,6 +506,39 @@ function ResultsScreen({
   const result = resultTypes[code] || resultTypes.SVAF;
   const [email, setEmail] = useState("");
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
+  const [sending, setSending] = useState(false);
+  const [sendStatus, setSendStatus] = useState<"idle" | "success" | "error">("idle");
+
+  // Auto-clear status message after 5s
+  useEffect(() => {
+    if (sendStatus === "idle") return;
+    const t = setTimeout(() => setSendStatus("idle"), 5000);
+    return () => clearTimeout(t);
+  }, [sendStatus]);
+
+  const handleSendReport = async () => {
+    if (sending) return;
+    setSending(true);
+    try {
+      const res = await fetch("/api/send-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, personalityType: result.code }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data?.success) {
+        setSendStatus("success");
+      } else {
+        setSendStatus("error");
+        if (data?.error) console.error("send-report error:", data.error);
+      }
+    } catch (err) {
+      console.error("send-report network error:", err);
+      setSendStatus("error");
+    } finally {
+      setSending(false);
+    }
+  };
 
   const percentile = Math.min(99, Math.max(5, result.aiScore));
 
@@ -1042,6 +1075,8 @@ function ResultsScreen({
                 }}
               />
               <button
+                onClick={handleSendReport}
+                disabled={sending}
                 style={{
                   background: "#1f4a34",
                   color: "#fff",
@@ -1050,15 +1085,36 @@ function ResultsScreen({
                   padding: "10px 20px",
                   borderRadius: "100px",
                   border: "none",
-                  cursor: "pointer",
+                  cursor: sending ? "default" : "pointer",
                   whiteSpace: "nowrap",
+                  opacity: sending ? 0.65 : 1,
+                  transition: "opacity 0.2s",
                 }}
               >
-                Generate Full Report
+                {sending ? "Sending..." : "Generate Full Report"}
               </button>
             </div>
 
           </div>
+
+          {/* Send status feedback */}
+          {sendStatus !== "idle" && (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                marginTop: "-6px",
+                marginBottom: "14px",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: sendStatus === "success" ? "#2d5a3d" : "#b94a3a",
+              }}
+            >
+              {sendStatus === "success"
+                ? "Report sent! Check your inbox."
+                : "Something went wrong. Please try again."}
+            </div>
+          )}
 
           {/* Captain CTA */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
