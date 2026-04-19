@@ -3,6 +3,7 @@ import captainLogo from "../../assets/captain-logo.png";
 export function ParticleHero() {
   return (
     <section
+      className="hero-section"
       style={{
         position: "relative",
         width: "100%",
@@ -10,6 +11,29 @@ export function ParticleHero() {
         overflow: "hidden",
       }}
     >
+      <style>{`
+        @media (max-width: 767px) {
+          .hero-section {
+            height: auto !important;
+            min-height: 100vh;
+          }
+          .hero-content-outer {
+            padding: 0 16px !important;
+          }
+          .hero-content-inner {
+            gap: 20px !important;
+          }
+          .hero-cta-group {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+          }
+          .hero-cta-btn {
+            padding: 14px 28px !important;
+            font-size: 15px !important;
+          }
+        }
+      `}</style>
       {/* Particle background via iframe */}
       <iframe
         src="/particle.html"
@@ -36,6 +60,7 @@ export function ParticleHero() {
         }}
       >
         <div
+          className="hero-content-outer"
           style={{
             width: "100%",
             maxWidth: "1100px",
@@ -47,7 +72,7 @@ export function ParticleHero() {
             gap: "32px",
           }}
         >
-        <div style={{ maxWidth: "520px", display: "flex", flexDirection: "column", gap: "32px", alignItems: "flex-start" }}>
+        <div className="hero-content-inner" style={{ maxWidth: "520px", display: "flex", flexDirection: "column", gap: "32px", alignItems: "flex-start" }}>
         {/* Badge */}
         <div
           style={{
@@ -130,6 +155,7 @@ export function ParticleHero() {
 
         {/* CTAs */}
         <div
+          className="hero-cta-group"
           style={{
             display: "flex",
             alignItems: "center",
@@ -139,6 +165,7 @@ export function ParticleHero() {
           }}
         >
           <a
+            className="hero-cta-btn"
             href="#waitlist"
             style={{
               background: "#1f4a34",

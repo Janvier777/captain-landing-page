@@ -8,12 +8,26 @@ export function Footer() {
 
   return (
     <footer
+      className="site-footer"
       style={{
         background: "#1A3D2B",
         padding: "48px 32px",
       }}
     >
+      <style>{`
+        @media (max-width: 767px) {
+          .site-footer {
+            padding: 32px 16px !important;
+          }
+          .footer-inner {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 16px !important;
+          }
+        }
+      `}</style>
       <div
+        className="footer-inner"
         style={{
           maxWidth: "1100px",
           margin: "0 auto",
