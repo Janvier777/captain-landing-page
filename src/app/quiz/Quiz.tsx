@@ -154,7 +154,7 @@ function CoverScreen({
             marginTop: 0,
           }}
         >
-          How AI-ready is your team?
+          How AI-native is your team?
         </p>
 
         {/* Description */}
