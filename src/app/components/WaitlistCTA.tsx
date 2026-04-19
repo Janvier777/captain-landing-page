@@ -8,6 +8,7 @@ export function WaitlistCTA() {
   return (
     <section
       id="waitlist"
+      className="waitlist-section"
       style={{
         background: "linear-gradient(160deg, #faf8f2 0%, #f5f7f0 25%, #f8faf4 50%, #f0f6e8 75%, #edf4e2 100%)",
         position: "relative",
@@ -19,8 +20,32 @@ export function WaitlistCTA() {
         padding: "100px 32px",
       }}
     >
+      <style>{`
+        @media (max-width: 767px) {
+          .waitlist-section {
+            padding: 60px 16px !important;
+            min-height: 400px !important;
+          }
+          .waitlist-hand {
+            width: 30% !important;
+            opacity: 0.3 !important;
+          }
+          .waitlist-input-wrap {
+            flex-direction: column !important;
+            border-radius: 16px !important;
+          }
+          .waitlist-input-wrap input {
+            padding: 14px 20px !important;
+          }
+          .waitlist-input-wrap button {
+            padding: 14px 24px !important;
+            border-radius: 100px !important;
+          }
+        }
+      `}</style>
       {/* Mechanical hand — left */}
       <motion.img
+        className="waitlist-hand"
         src="/mech-hand-nobg.png"
         alt=""
         initial={{ opacity: 0, x: "-60%" }}
@@ -41,6 +66,7 @@ export function WaitlistCTA() {
 
       {/* Human hand — right */}
       <motion.img
+        className="waitlist-hand"
         src="/human-hand-nobg.png"
         alt=""
         initial={{ opacity: 0, x: "60%" }}
@@ -137,6 +163,7 @@ export function WaitlistCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={vp}
           transition={{ duration: 0.65, ease, delay: 0.2 }}
+          className="waitlist-input-wrap"
           style={{
             display: "flex",
             gap: "0",

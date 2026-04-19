@@ -45,11 +45,35 @@ function CoverScreen({
     >
       <style>{`
         @media (max-width: 767px) {
+          .agti-cover-content {
+            margin-top: -10vh !important;
+            padding: 0 16px !important;
+          }
+          .agti-label {
+            font-size: 11px !important;
+          }
           .agti-title {
             font-size: 48px !important;
           }
+          .agti-subtitle {
+            font-size: 20px !important;
+          }
+          .agti-desc {
+            font-size: 16px !important;
+          }
           .agti-btn {
-            font-size: 13px !important;
+            font-size: 15px !important;
+            padding: 12px 24px !important;
+          }
+          .agti-captain-row {
+            flex-direction: column !important;
+            gap: 4px !important;
+          }
+          .agti-captain-logo {
+            height: 50px !important;
+          }
+          .agti-captain-text {
+            font-size: 14px !important;
           }
         }
       `}</style>
@@ -80,6 +104,7 @@ function CoverScreen({
 
       {/* Content */}
       <motion.div
+        className="agti-cover-content"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease }}
@@ -97,6 +122,7 @@ function CoverScreen({
       >
         {/* Label */}
         <p
+          className="agti-label"
           style={{
             fontSize: "16px",
             fontWeight: 500,
@@ -128,6 +154,7 @@ function CoverScreen({
 
         {/* Subtitle */}
         <p
+          className="agti-subtitle"
           style={{
             fontSize: "32px",
             fontWeight: 600,
@@ -141,6 +168,7 @@ function CoverScreen({
 
         {/* Description */}
         <p
+          className="agti-desc"
           style={{
             fontSize: "22px",
             color: "#3a5a44",
@@ -184,6 +212,7 @@ function CoverScreen({
 
         {/* Captain referral row */}
         <a
+          className="agti-captain-row"
           href="#"
           onClick={(e) => { e.preventDefault(); onLearnMore(); }}
           style={{
@@ -199,9 +228,11 @@ function CoverScreen({
           <img
             src="/assets/captain-logo.jpg"
             alt="Captain"
+            className="agti-captain-logo"
             style={{ height: "80px", width: "auto", mixBlendMode: "multiply" }}
           />
           <span
+            className="agti-captain-text"
             style={{
               fontSize: "20px",
               fontWeight: 600,
@@ -232,7 +263,7 @@ function QuizScreen({
   const total = questions.length;
   const q = questions[currentIdx];
   const progress = ((currentIdx + 1) / total) * 100;
-  const canSkip = currentIdx >= 14; // from question 15 onwards (0-indexed: 14)
+  const canSkip = currentIdx >= 9; // from question 10 onwards (0-indexed: 9)
 
   const handleSelect = (letter: string) => {
     const updated = { ...answers, [q.id]: letter };
@@ -314,7 +345,7 @@ function QuizScreen({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "100px 24px 120px",
+          padding: "clamp(70px, 12vh, 100px) 16px clamp(80px, 14vh, 120px)",
         }}
       >
         <AnimatePresence mode="wait">
@@ -710,7 +741,38 @@ function ResultsScreen({
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+      <style>{`
+        @media (max-width: 767px) {
+          .results-container {
+            padding: 24px 16px 40px !important;
+          }
+          .results-main-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .results-dim-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .results-qr-score-share {
+            grid-template-columns: auto 1fr auto !important;
+            gap: 8px !important;
+          }
+          .results-qr-link {
+            width: 48px !important;
+            height: 48px !important;
+          }
+          .results-email-section {
+            padding: 20px 16px !important;
+          }
+          .results-email-input-wrap {
+            flex: 1 1 100% !important;
+            min-width: 0 !important;
+          }
+          .results-hook {
+            font-size: 14px !important;
+          }
+        }
+      `}</style>
+      <div className="results-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
 
         {/* Partial results banner */}
         {!isComplete && (
@@ -803,6 +865,7 @@ function ResultsScreen({
 
         {/* Main content: 2-column grid */}
         <motion.div
+          className="results-main-grid"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease, delay: 0.1 }}
@@ -844,6 +907,7 @@ function ResultsScreen({
 
             {/* Bottom row: QR | Score | Share */}
             <div
+              className="results-qr-score-share"
               style={{
                 display: "grid",
                 gridTemplateColumns: "auto 1fr auto",
@@ -854,6 +918,7 @@ function ResultsScreen({
             >
               {/* QR code — left */}
               <a
+                className="results-qr-link"
                 href="https://captainspace.ai"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -956,7 +1021,7 @@ function ResultsScreen({
               </p>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+            <div className="results-dim-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
               {dimData.map((d) => {
                 const tot = d.leftVal + d.rightVal;
                 const leftPct = tot > 0 ? (d.leftVal / tot) * 100 : 50;
@@ -1020,6 +1085,7 @@ function ResultsScreen({
 
         {/* Action buttons: Generate Report + Share */}
         <motion.div
+          className="results-email-section"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease, delay: 0.2 }}
@@ -1047,6 +1113,7 @@ function ResultsScreen({
 
           <div style={{ display: "flex", gap: "10px", marginBottom: "18px", flexWrap: "wrap", alignItems: "center" }}>
             <div
+              className="results-email-input-wrap"
               style={{
                 display: "flex",
                 background: "rgba(255,255,255,0.7)",

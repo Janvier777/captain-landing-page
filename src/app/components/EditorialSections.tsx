@@ -97,7 +97,7 @@ function BrowserCard({
       </div>
 
       {/* Content */}
-      <div style={{ padding: "32px 36px 36px" }}>
+      <div className="browser-card-content" style={{ padding: "32px 36px 36px" }}>
         <h3
           style={{
             fontFamily: "'Playfair Display', Georgia, serif",
@@ -152,6 +152,7 @@ function Section3({ onGoToQuiz }: { onGoToQuiz?: () => void }) {
 
   return (
     <section
+      className="feature-section-wrap"
       style={{ maxWidth: "1160px", margin: "0 auto", padding: "100px 32px" }}
     >
       <style>{`
@@ -165,6 +166,14 @@ function Section3({ onGoToQuiz }: { onGoToQuiz?: () => void }) {
           }
           .feature-col-right {
             padding-top: 0 !important;
+          }
+        }
+        @media (max-width: 767px) {
+          .feature-section-wrap {
+            padding: 60px 16px !important;
+          }
+          .browser-card-content {
+            padding: 20px 20px 24px !important;
           }
         }
       `}</style>
