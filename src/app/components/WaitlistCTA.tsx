@@ -154,7 +154,7 @@ export function WaitlistCTA() {
             margin: "0 auto 44px",
           }}
         >
-          We're onboarding design partners now. Get early access before public launch.
+          We're building an AI-native collaborative workspace to help companies navigate their AI transformation. If that sounds like you, come onboard as an early user and get 50% off.
         </motion.p>
 
         {/* Email input + button */}
