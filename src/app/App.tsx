@@ -156,10 +156,35 @@ function ScrollProgress() {
   );
 }
 
+function getInitialPage(): "quiz" | "landing" {
+  if (typeof window === "undefined") return "landing";
+  return window.location.pathname.startsWith("/agti") ? "quiz" : "landing";
+}
+
 export default function App() {
-  const [page, setPage] = useState<"quiz" | "landing">("quiz");
-  const goToQuiz = () => { setPage("quiz"); window.scrollTo(0, 0); };
-  const goToLanding = () => { setPage("landing"); window.scrollTo(0, 0); };
+  const [page, setPage] = useState<"quiz" | "landing">(getInitialPage);
+
+  const goToQuiz = () => {
+    setPage("quiz");
+    window.history.pushState(null, "", "/agti");
+    window.scrollTo(0, 0);
+  };
+  const goToLanding = () => {
+    setPage("landing");
+    window.history.pushState(null, "", "/");
+    window.scrollTo(0, 0);
+  };
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const onPopState = () => {
+      const next = window.location.pathname.startsWith("/agti") ? "quiz" : "landing";
+      setPage(next);
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
   useEffect(() => {
     if (supabaseMissing) {
       console.error("Supabase env vars missing — check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY");
