@@ -531,16 +531,10 @@ function ResultsScreen({
   const [sending, setSending] = useState(false);
   const [sendStatus, setSendStatus] = useState<"idle" | "success" | "error">("idle");
 
-  // Auto-clear status message after 5s
-  useEffect(() => {
-    if (sendStatus === "idle") return;
-    const t = setTimeout(() => setSendStatus("idle"), 8000);
-    return () => clearTimeout(t);
-  }, [sendStatus]);
-
   const handleSendReport = async () => {
     if (sending) return;
     setSending(true);
+    setSendStatus("idle");
     try {
       const res = await fetch("/api/send-report", {
         method: "POST",
@@ -550,6 +544,7 @@ function ResultsScreen({
       const data = await res.json().catch(() => ({}));
       if (res.ok && data?.success) {
         setSendStatus("success");
+        setEmail("");
       } else {
         setSendStatus("error");
         if (data?.error) console.error("send-report error:", data.error);
@@ -1155,28 +1150,78 @@ function ResultsScreen({
 
           </div>
 
-          {/* Send status feedback */}
-          {sendStatus !== "idle" && (
-            <div
-              role="status"
-              aria-live="polite"
-              style={{
-                marginTop: "4px",
-                marginBottom: "14px",
-                padding: "12px 18px",
-                borderRadius: "10px",
-                fontSize: "14px",
-                fontWeight: 600,
-                background: sendStatus === "success" ? "rgba(45,90,61,0.10)" : "rgba(185,74,58,0.10)",
-                border: sendStatus === "success" ? "1px solid rgba(45,90,61,0.20)" : "1px solid rgba(185,74,58,0.20)",
-                color: sendStatus === "success" ? "#2d5a3d" : "#b94a3a",
-              }}
-            >
-              {sendStatus === "success"
-                ? "Report sent successfully! Please check your inbox (and spam folder)."
-                : "Something went wrong. Please try again."}
-            </div>
-          )}
+          {/* Modal popup */}
+          <AnimatePresence>
+            {sendStatus !== "idle" && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setSendStatus("idle")}
+                style={{
+                  position: "fixed",
+                  inset: 0,
+                  zIndex: 9999,
+                  background: "rgba(0,0,0,0.4)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "24px",
+                }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    background: "#fff",
+                    borderRadius: "18px",
+                    padding: "40px 36px",
+                    maxWidth: "420px",
+                    width: "100%",
+                    textAlign: "center",
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+                  }}
+                >
+                  <div style={{ fontSize: "48px", marginBottom: "16px" }}>
+                    {sendStatus === "success" ? "\u2705" : "\u26A0\uFE0F"}
+                  </div>
+                  <h3 style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: "22px",
+                    fontWeight: 600,
+                    color: "#0C342C",
+                    marginBottom: "12px",
+                  }}>
+                    {sendStatus === "success" ? "Report Sent!" : "Something Went Wrong"}
+                  </h3>
+                  <p style={{ fontSize: "15px", color: "#4a7a6a", lineHeight: 1.6, marginBottom: "24px" }}>
+                    {sendStatus === "success"
+                      ? "Your AGTI report has been sent. Please check your inbox (and spam folder)."
+                      : "We couldn't send your report. Please try again in a moment."}
+                  </p>
+                  <button
+                    onClick={() => setSendStatus("idle")}
+                    style={{
+                      background: "#1f4a34",
+                      color: "#fff",
+                      fontSize: "15px",
+                      fontWeight: 600,
+                      padding: "12px 32px",
+                      borderRadius: "100px",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {sendStatus === "success" ? "Got it" : "Close"}
+                  </button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Captain CTA */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

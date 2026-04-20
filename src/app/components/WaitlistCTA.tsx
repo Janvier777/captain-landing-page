@@ -1,10 +1,31 @@
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const vp = { once: true, margin: "-60px" } as const;
 
 export function WaitlistCTA() {
-  // TODO: Wire up email submission to your backend or Mailchimp/Loops
+  const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+
+  const handleSubmit = async () => {
+    if (sending || !email.trim()) return;
+    setSending(true);
+    setStatus("idle");
+    // For now, simulate success (no waitlist API yet)
+    // TODO: Replace with actual waitlist API call
+    try {
+      await new Promise((r) => setTimeout(r, 1500));
+      setStatus("success");
+      setEmail("");
+    } catch {
+      setStatus("error");
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <section
       id="waitlist"
@@ -180,6 +201,8 @@ export function WaitlistCTA() {
           <input
             type="email"
             placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             style={{
               flex: 1,
               background: "transparent",
@@ -192,6 +215,8 @@ export function WaitlistCTA() {
             }}
           />
           <button
+            onClick={handleSubmit}
+            disabled={sending}
             style={{
               background: "#1f4a34",
               color: "#F5F0E8",
@@ -200,13 +225,87 @@ export function WaitlistCTA() {
               padding: "16px 36px",
               borderRadius: "100px",
               border: "none",
-              cursor: "pointer",
+              cursor: sending ? "default" : "pointer",
               whiteSpace: "nowrap",
+              opacity: sending ? 0.65 : 1,
             }}
           >
-            Get Early Access
+            {sending ? "Sending..." : "Get Early Access"}
           </button>
         </motion.div>
+
+        {/* Modal popup */}
+        <AnimatePresence>
+          {status !== "idle" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setStatus("idle")}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 9999,
+                background: "rgba(0,0,0,0.4)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "24px",
+              }}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  background: "#fff",
+                  borderRadius: "18px",
+                  padding: "40px 36px",
+                  maxWidth: "420px",
+                  width: "100%",
+                  textAlign: "center",
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+                }}
+              >
+                <div style={{ fontSize: "48px", marginBottom: "16px" }}>
+                  {status === "success" ? "\u2705" : "\u26A0\uFE0F"}
+                </div>
+                <h3 style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: "22px",
+                  fontWeight: 600,
+                  color: "#0C342C",
+                  marginBottom: "12px",
+                }}>
+                  {status === "success" ? "You're on the list!" : "Something Went Wrong"}
+                </h3>
+                <p style={{ fontSize: "15px", color: "#4a7a6a", lineHeight: 1.6, marginBottom: "24px" }}>
+                  {status === "success"
+                    ? "We'll reach out soon with early access details. Check your inbox."
+                    : "Please try again in a moment."}
+                </p>
+                <button
+                  onClick={() => setStatus("idle")}
+                  style={{
+                    background: "#1f4a34",
+                    color: "#fff",
+                    fontSize: "15px",
+                    fontWeight: 600,
+                    padding: "12px 32px",
+                    borderRadius: "100px",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  {status === "success" ? "Got it" : "Close"}
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Fine print */}
         <motion.p
