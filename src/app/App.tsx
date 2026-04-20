@@ -185,6 +185,13 @@ export default function App() {
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
+
+  // Dynamic page title
+  useEffect(() => {
+    document.title = page === "quiz"
+      ? "The AGTI — AI Group Type Indicator"
+      : "Build Your AI-Native Workspace with Captain";
+  }, [page]);
   useEffect(() => {
     if (supabaseMissing) {
       console.error("Supabase env vars missing — check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY");
