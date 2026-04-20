@@ -534,7 +534,7 @@ function ResultsScreen({
   // Auto-clear status message after 5s
   useEffect(() => {
     if (sendStatus === "idle") return;
-    const t = setTimeout(() => setSendStatus("idle"), 5000);
+    const t = setTimeout(() => setSendStatus("idle"), 8000);
     return () => clearTimeout(t);
   }, [sendStatus]);
 
@@ -1161,15 +1161,19 @@ function ResultsScreen({
               role="status"
               aria-live="polite"
               style={{
-                marginTop: "-6px",
+                marginTop: "4px",
                 marginBottom: "14px",
-                fontSize: "13px",
-                fontWeight: 500,
+                padding: "12px 18px",
+                borderRadius: "10px",
+                fontSize: "14px",
+                fontWeight: 600,
+                background: sendStatus === "success" ? "rgba(45,90,61,0.10)" : "rgba(185,74,58,0.10)",
+                border: sendStatus === "success" ? "1px solid rgba(45,90,61,0.20)" : "1px solid rgba(185,74,58,0.20)",
                 color: sendStatus === "success" ? "#2d5a3d" : "#b94a3a",
               }}
             >
               {sendStatus === "success"
-                ? "Report sent! Check your inbox."
+                ? "Report sent successfully! Please check your inbox (and spam folder)."
                 : "Something went wrong. Please try again."}
             </div>
           )}

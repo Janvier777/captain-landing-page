@@ -198,34 +198,17 @@ export const dimensions = [
   { key: "fm", label: "Team operating system", poles: ["Focus-mode (F)", "Meeting-mode (M)"] },
 ];
 
-// Balanced decision function for dimension scoring
+// Deterministic decision function for dimension scoring.
+// No randomness — same answers always produce the same result.
+// On a tie, sideA wins (consistent tiebreaker).
 function decide(
   sideA: string,
   sideB: string,
   countA: number,
   countB: number
 ): string {
-  const diff = Math.abs(countA - countB);
-
-  if (countA + countB === 0) {
-    // No answers for this dimension: pure 50/50
-    return Math.random() > 0.5 ? sideA : sideB;
-  }
-
-  if (diff >= 2) {
-    // Clear winner
-    return countA > countB ? sideA : sideB;
-  }
-
-  if (diff === 0) {
-    // True tie: pure 50/50
-    return Math.random() > 0.5 ? sideA : sideB;
-  }
-
-  // diff === 1: slight lean but not deterministic
-  const winner = countA > countB ? sideA : sideB;
-  const loser = countA > countB ? sideB : sideA;
-  return Math.random() > 0.35 ? winner : loser;
+  if (countA >= countB) return sideA;
+  return sideB;
 }
 
 export function calculateResult(answers: Record<number, string>) {
