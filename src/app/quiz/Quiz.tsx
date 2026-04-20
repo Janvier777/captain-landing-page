@@ -701,18 +701,18 @@ function ResultsScreen({
         color: { dark: "#0C342C", light: "#00000000" },
       });
       const qrImg = await loadImg(qrUrl);
-      const qrSize = 130;
+      const qrSize = 110;
       const qrX = cx - qrSize / 2;
-      const qrY = h - 220;
+      const qrY = h - 280;
       ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
 
       ctx.textAlign = "center";
-      ctx.font = "600 18px Inter, sans-serif";
+      ctx.font = "600 16px Inter, sans-serif";
       ctx.fillStyle = "#1f4a34";
-      ctx.fillText("captainspace.ai", cx, qrY + qrSize + 30);
-      ctx.font = "400 13px Inter, sans-serif";
+      ctx.fillText("captainspace.ai", cx, qrY + qrSize + 24);
+      ctx.font = "400 12px Inter, sans-serif";
       ctx.fillStyle = "#7a9a8a";
-      ctx.fillText("Scan to discover your team's type", cx, qrY + qrSize + 52);
+      ctx.fillText("Scan to discover your team's type", cx, qrY + qrSize + 44);
 
       // Download
       const link = document.createElement("a");
